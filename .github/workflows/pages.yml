@@ -1,0 +1,21 @@
+on:
+  push:
+  schedule:
+  - cron: '20,50 * * * *'
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: checkout gh-pages
+      run: |
+        git fetch --no-tags origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages
+        git worktree add gh-pages gh-pages
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.x
+    - run: .github/pages.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
