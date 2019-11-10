@@ -222,7 +222,7 @@ def main():
         },
         allow_redirects=False,
     )
-    assert rsp.status_code == 201
+    assert rsp.status_code == 201, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
 
     try:
         release = rsp.json()
@@ -256,7 +256,7 @@ def main():
                         data=data,
                         allow_redirects=False,
                     )
-                    assert rsp.status_code == 201
+                    assert rsp.status_code == 201, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
 
         # find and remove previous release
         rsp = requests.get(f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases/tags/{GITHUB_BRANCH}',
