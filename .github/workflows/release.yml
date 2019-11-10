@@ -1,0 +1,14 @@
+on: push
+
+jobs:
+  push:
+    if: github.ref != 'refs/heads/template'
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - run: exec .github/release.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
