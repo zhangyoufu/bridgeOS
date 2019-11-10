@@ -1,0 +1,18 @@
+{
+  "Version": "16.16.4506.5.1",
+  "PostDate": "2019-10-22T20:22:02Z",
+  "Packages": [
+    {
+      "Digest": "2ba1b3a854672c97de30802ea736a39247c4d071",
+      "Size": 323892543,
+      "MetadataURL": "https://swdist.apple.com/content/downloads/43/18/041-88793/mv00e001cvq03ygn8xgor70ky9bld0dd5k/BridgeOSUpdateCustomer.pkm",
+      "URL": "http://swcdn.apple.com/content/downloads/43/18/041-88793/mv00e001cvq03ygn8xgor70ky9bld0dd5k/BridgeOSUpdateCustomer.pkg"
+    },
+    {
+      "Digest": "6e1478c7a1db2d679dbd397bb0cdae8dca9ef326",
+      "Size": 734514,
+      "MetadataURL": "https://swdist.apple.com/content/downloads/43/18/041-88793/mv00e001cvq03ygn8xgor70ky9bld0dd5k/BridgeOSBrain.pkm",
+      "URL": "http://swcdn.apple.com/content/downloads/43/18/041-88793/mv00e001cvq03ygn8xgor70ky9bld0dd5k/BridgeOSBrain.pkg"
+    }
+  ]
+}
