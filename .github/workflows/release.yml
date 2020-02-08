@@ -5,10 +5,11 @@ jobs:
     if: github.ref != 'refs/heads/template'
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
       with:
-        fetch-depth: 1
-    - run: exec .github/release.sh
+        python-version: 3.x
+    - run: pip3 install -r .github/requirements.txt
+    - run: .github/release.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
