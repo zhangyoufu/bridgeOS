@@ -1,0 +1,22 @@
+{
+  "Version": "17.16.14257.5.1",
+  "PostDate": "2020-03-10T20:08:06Z",
+  "Packages": [
+    {
+      "Digest": "680fb4b80fdbd05ef155f932085fa0a96120e244",
+      "Size": 331288831,
+      "IntegrityDataURL": "http://swcdn.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSUpdateCustomer.pkg.integrityDataV1",
+      "MetadataURL": "https://swdist.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSUpdateCustomer.pkm",
+      "URL": "http://swcdn.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSUpdateCustomer.pkg",
+      "IntegrityDataSize": 1220
+    },
+    {
+      "Digest": "506b6b8a32bf79a46b8a8d88bd9ad8c3d2f7979f",
+      "Size": 1052917,
+      "IntegrityDataURL": "http://swcdn.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSBrain.pkg.integrityDataV1",
+      "MetadataURL": "https://swdist.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSBrain.pkm",
+      "URL": "http://swcdn.apple.com/content/downloads/54/35/061-88011-A_JR6ANZ0TFA/849zvn8kq143uu1qeyj7t4i58yze6y00ep/BridgeOSBrain.pkg",
+      "IntegrityDataSize": 104
+    }
+  ]
+}
