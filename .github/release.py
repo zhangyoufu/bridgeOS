@@ -235,28 +235,41 @@ def main():
             num_chunks = (size + chunk_limit-1) // chunk_limit
             with open(filename, 'rb') as f:
                 for chunk_idx in range(num_chunks):
-                    if num_chunks > 1:
-                        logging.info(f'Sending chunk #{chunk_idx+1}...')
-                        name = f'{filename}.{chunk_idx+1}'
-                        f.seek(chunk_idx * chunk_limit)
-                        if chunk_idx == num_chunks - 1:
-                            length = size % chunk_limit
+                    while 1:
+                        if num_chunks > 1:
+                            logging.info(f'Sending chunk #{chunk_idx+1}...')
+                            name = f'{filename}.{chunk_idx+1}'
+                            f.seek(chunk_idx * chunk_limit)
+                            if chunk_idx == num_chunks - 1:
+                                length = size % chunk_limit
+                            else:
+                                length = chunk_limit
+                            data = LimitedReader(f, length)
                         else:
-                            length = chunk_limit
-                        data = LimitedReader(f, length)
-                    else:
-                        name = filename
-                        data = f
-                    rsp = requests.post(upload_url,
-                        params={'name': name},
-                        headers={
-                            'Authorization': f'token {GITHUB_TOKEN}',
-                            'Content-Type': 'application/octet-stream',
-                        },
-                        data=data,
-                        allow_redirects=False,
-                    )
-                    assert rsp.status_code == 201, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
+                            name = filename
+                            f.seek(0)
+                            data = f
+                        try:
+                            rsp = requests.post(upload_url,
+                                params={'name': name},
+                                headers={
+                                    'Authorization': f'token {GITHUB_TOKEN}',
+                                    'Content-Type': 'application/octet-stream',
+                                },
+                                data=data,
+                                allow_redirects=False,
+                            )
+                            if rsp.status_code == 201:
+                                break
+                            logging.error(f'{rsp.status_code} {rsp.reason}\n{rsp.text}')
+                            if rsp.status_code == 422:
+                                # assume {"resource":"ReleaseAsset","code":"already_exists","field":"name"}
+                                delete_asset(release['assets_url'], name, token=GITHUB_TOKEN)
+                            else:
+                                assert rsp.status_code in [500, 502, 504], 'unexpected HTTP status code'
+                        except requests.ConnectionError:
+                            pass
+                        logging.error('Upload failed, retry')
 
         # find and remove previous release
         rsp = requests.get(f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases/tags/{GITHUB_BRANCH}',
@@ -270,17 +283,17 @@ def main():
                 headers={'Authorization': f'token {GITHUB_TOKEN}'},
                 allow_redirects=False,
             )
-            assert rsp.status_code == 204
+            assert rsp.status_code == 204, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
             logging.info('Previous GitHub release removed')
         else:
-            assert rsp.status_code == 404
+            assert rsp.status_code == 404, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
     except BaseException:
         logging.exception('Release aborted')
         rsp = requests.delete(release['url'],
             headers={'Authorization': f'token {GITHUB_TOKEN}'},
             allow_redirects=False,
         )
-        assert rsp.status_code != 204
+        assert rsp.status_code != 204, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
         sys.exit(1)
     else:
         # publish draft
@@ -289,7 +302,7 @@ def main():
             json={'draft': False},
             allow_redirects=False,
         )
-        assert rsp.status_code == 200
+        assert rsp.status_code == 200, f'{rsp.status_code} {rsp.reason}\n{rsp.text}'
 
     logging.info('Done')
 
