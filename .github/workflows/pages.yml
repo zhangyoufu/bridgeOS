@@ -1,20 +1,26 @@
 on:
   push:
-  schedule:
-  - cron: '20,50 * * * *'
+  release:
+    types: [published]
+  schedule: # keep the daily cron in case release events race
+  - cron: '0 0 * * *'
 
 jobs:
   pages:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: checkout gh-pages
+    - name: Checkout gh-pages
       run: |
         git fetch --no-tags origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages
         git worktree add gh-pages gh-pages
     - uses: actions/setup-python@v1
       with:
         python-version: 3.x
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r .github/requirements.txt
     - run: .github/pages.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
