@@ -14,14 +14,27 @@ jobs:
       run: |
         git fetch --no-tags origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages
         git worktree add gh-pages gh-pages
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: 3.x
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r .github/requirements.txt
-    - run: .github/pages.sh
+        pip install -r requirements.txt
+    - name: Generate gh-pages
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+      run: ./pages.py >gh-pages/index.html
+    - name: Commit if dirty
+      env:
+        PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+      working-directory: gh-pages
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+        	git config --global user.name 'GitHub Actions'
+        	git config --global user.email "$(whoami)@$(hostname --fqdn)"
+        	git config http.https://github.com/.extraheader "Authorization: Basic $(echo -n "dummy:${PERSONAL_ACCESS_TOKEN}" | base64 --wrap=0)"
+        	git add --all
+        	git commit --amend --reset-author --message 'automatic commit'
+        	git push --force
+        fi
