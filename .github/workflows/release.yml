@@ -6,10 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: 3.x
-    - run: pip3 install -r .github/requirements.txt
-    - run: .github/release.py
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
+    - run: ./release.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
