@@ -2,7 +2,6 @@ on: push
 
 jobs:
   push:
-    if: hashFiles('product.json') != ''
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -11,6 +10,8 @@ jobs:
         python-version: 3.x
     - name: Install dependencies
       run: pip3 install -r requirements.txt
-    - run: ./release.py
+    - name: Release
+      if: hashFiles('product.json') != ''
+      run: ./release.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
