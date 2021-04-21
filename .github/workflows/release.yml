@@ -15,4 +15,4 @@ jobs:
       if: hashFiles('product.json') != ''
       run: ./release.py
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets._GITHUB_PERSONAL_ACCESS_TOKEN }}
