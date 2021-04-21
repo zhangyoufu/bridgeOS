@@ -1,7 +1,6 @@
 on:
   schedule:
   - cron: '9 13 * * *'
-
 jobs:
   check:
     runs-on: ubuntu-latest

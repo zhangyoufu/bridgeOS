@@ -2,9 +2,7 @@ on:
   push:
   release:
     types: [published]
-  schedule: # keep the daily cron in case release events race
-  - cron: '0 0 * * *'
-
+concurrency: pages
 jobs:
   pages:
     runs-on: ubuntu-latest
