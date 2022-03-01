@@ -15,7 +15,7 @@ jobs:
       run: |-
         git fetch --no-tags origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages
         git worktree add gh-pages gh-pages
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v3
       with:
         python-version: 3.x
     - name: Install dependencies
