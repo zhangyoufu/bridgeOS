@@ -124,6 +124,7 @@ def main():
     GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
     GITHUB_REPOSITORY = os.environ['GITHUB_REPOSITORY']
     GITHUB_BRANCH = re.fullmatch(r'refs/heads/(.*)', os.environ['GITHUB_REF']).group(1)
+    GITHUB_TAG = f'tag_{GITHUB_BRANCH}'
 
     logging.info('Parsing product.json...')
     product = json.load(open('product.json'))
@@ -214,7 +215,7 @@ def main():
     rsp = requests.post(f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases',
         headers={'Authorization': f'token {GITHUB_TOKEN}'},
         json={
-            'tag_name': GITHUB_BRANCH,
+            'tag_name': GITHUB_TAG,
             'target_commitish': 'empty',
             'name': distribution,
             'body': f'`{post_date}`',
@@ -272,7 +273,7 @@ def main():
                         logging.error('Upload failed, retry')
 
         # find and remove previous release
-        rsp = requests.get(f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases/tags/{GITHUB_BRANCH}',
+        rsp = requests.get(f'https://api.github.com/repos/{GITHUB_REPOSITORY}/releases/tags/{GITHUB_TAG}',
             headers={'Authorization': f'token {GITHUB_TOKEN}'},
             allow_redirects=False,
         )
