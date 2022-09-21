@@ -14,3 +14,5 @@ jobs:
     - name: Release
       if: hashFiles('product.json') != ''
       run: ./release.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
