@@ -242,7 +242,7 @@ def main():
                             name = f'{filename}.{chunk_idx+1}'
                             f.seek(chunk_idx * chunk_limit)
                             if chunk_idx == num_chunks - 1:
-                                length = size % chunk_limit
+                                length = (size-1) % chunk_limit + 1
                             else:
                                 length = chunk_limit
                             data = LimitedReader(f, length)
